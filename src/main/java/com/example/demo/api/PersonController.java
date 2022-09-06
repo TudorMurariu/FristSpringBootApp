@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequestMapping("api/v1/person")
@@ -34,5 +35,21 @@ public class PersonController {
         l.add(new Person(UUID.randomUUID(),"Andrei"));
         l.add(new Person(UUID.randomUUID(),"Matei"));
         return l;*/
+    }
+
+    @GetMapping(path = "{id}")
+    public Person getPerson(@PathVariable("id") UUID id){
+        return personService.selectPerson(id)
+                .orElse(null);
+    }
+
+    @DeleteMapping(path = "{id}")
+    public int deletePersonById(@PathVariable("id") UUID id){
+        return personService.deletePersonById(id);
+    }
+
+    @PutMapping(path = "{id}")
+    public int updatePersonById(@PathVariable("id") UUID id,@RequestBody Person person){
+        return personService.updatePersonById(id, person);
     }
 }
